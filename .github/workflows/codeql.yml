@@ -33,7 +33,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
-        queries: security-extended
+        queries: security-extended,./.github/codeql/custom-queries/UnpinnedActionsTag.ql
     
     - if: matrix.language == 'java'  
       name: Set up java 17
