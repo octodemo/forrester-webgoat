@@ -50,7 +50,7 @@
      this.dataSource = dataSource;
    }
  
-   @PutMapping("/SqlInjectionAdvanced/challenge")
+   @PutMapping("/SqlInjectionAdvanced/challengeNew")
    // assignment path is bounded to class so we use different http method :-)
    @ResponseBody
    public AttackResult registerNewUser(
