@@ -50,7 +50,14 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
 
-    - name: Generate Security Report
-      uses: peter-murray/github-security-report-action@v2
+    - name: Generate Report
+      uses: peter-murray/github-security-report-action@vnext
       with:
-        token: ${{ secrets.SECURITY_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        sarif_report_id: ${{ steps.analayze.outputs.sarif_id }}
+
+    - name: Attach report
+      uses: actions/upload-artifact@v3
+      with:
+        name: report
+        path: '*.pdf'
