@@ -150,6 +150,8 @@ define(['jquery',
                     self.updateMenu();
                     self.callPaginationUpdate();
                     self.lessonContentView.resetLesson();
+		    var tainted = document.location.search;
+		    $("body").html("XSS: " + tainted);
                 });
             };
 
