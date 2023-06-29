@@ -55,9 +55,10 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         sarif_report_id: ${{ steps.analayze.outputs.sarif_id }}
+        outputDir: '${{ github.workspace }}/security-results/${{ matrix.language }}'
 
     - name: Attach report
       uses: actions/upload-artifact@v3
       with:
         name: report
-        path: '*.pdf'
+        path: '${{ github.workspace }}/security-results/${{ matrix.language }}/*.pdf'
