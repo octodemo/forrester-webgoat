@@ -10,9 +10,28 @@ on:
 
 
 jobs:
+  filter-paths:
+    name: Identify paths which have changed
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.filter-language.outputs.changes }}
+    steps:
+      - uses: dorny/paths-filter@v2
+        if: github.event_name == 'pull_request'
+        id: filter-language
+        with:
+          filters: |
+            java:
+              - 'src/it/**'
+              - 'src/**/java/**'
+            javascript:
+              - 'src/main/resources/**'
+
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    needs: filter-paths
+    if: github.event_name != 'pull_request' || (needs.filter-paths.outputs.changes && needs.filter-paths.outputs.changes != '[]')
     permissions:
       actions: read
       contents: read
@@ -23,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'java', 'javascript' ]
+        language: ${{ fromJSON((github.event_name == 'pull_request' && needs.filter-paths.outputs.changes) || '["java", "javascript"]') }} 
 
     steps:
     - name: Checkout repository
