@@ -50,3 +50,15 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
+
+    - name: Generate Report
+      uses: peter-murray/github-security-report-action@vnext
+      with:
+        sarif_report_id: ${{ steps.analayze.outputs.sarif_id }}
+        outputDir: '${{ github.workspace }}/security-results/${{ matrix.language }}'
+
+    - name: Attach report
+      uses: actions/upload-artifact@v3
+      with:
+        name: report
+        path: '${{ github.workspace }}/security-results/${{ matrix.language }}/*.pdf'
