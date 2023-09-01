@@ -1,0 +1,27 @@
+name: "My CodeQL Config"
+
+disable-default-queries: true
+
+packs:
+  javascript:
+    - +advanced-security/codeql-javascript@latest
+  java:
+    - +advanced-security/codeql-java@latest
+
+queries:
+  - uses: ./.github/codeql/custom-queries/UnpinnedActionsTag.ql
+
+query-filters:
+  - exclude:
+      id: js/redundant-assignment
+      problem.severity:
+        - warning
+        - recommendation
+  - exclude:
+      id: js/useless-assignment-to-local
+      
+paths:
+  - src
+paths-ignore:
+  - src/node_modules
+  - '**/*.test.js'
